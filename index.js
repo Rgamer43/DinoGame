@@ -65,6 +65,13 @@ let cactus = {
     y: -25,
     xSize: 50,
     ySize: 105,
+    move: () => {
+        speed = 1;
+        let moveInterval = setInterval(() => {
+            cactus.x -= 1;
+            if (cactus.x < -50) cactus.x = w;
+        }, speed)
+    }
 }
 
 function init() {
@@ -76,6 +83,7 @@ function init() {
             }
         }
     });
+    cactus.move();
 }
 
 function draw() {
