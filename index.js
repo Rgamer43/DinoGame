@@ -70,6 +70,9 @@ let cactus = {
         let moveInterval = setInterval(() => {
             cactus.x -= 1;
             if (cactus.x < -50) cactus.x = w;
+            if (dino.y <= cactus.y+50 && dino.x >= cactus.x-15 && dino.x <= cactus.x +15) {
+                console.log("Game Over")
+            }
         }, speed)
     }
 }
