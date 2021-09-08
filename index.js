@@ -60,8 +60,16 @@ let dino = {
     }
 }
 
+let gameEnded = false;
+function gameOver() {
+    if (!gameEnded) {
+        gameEnded = true;
+        console.log("Game Over!");
+    }
+}
+
 let cactus = {
-    x: 0,
+    x: w,
     y: -25,
     xSize: 50,
     ySize: 105,
@@ -70,8 +78,9 @@ let cactus = {
         let moveInterval = setInterval(() => {
             cactus.x -= 1;
             if (cactus.x < -50) cactus.x = w;
-            if (dino.y <= cactus.y+50 && dino.x >= cactus.x-15 && dino.x <= cactus.x +15) {
-                console.log("Game Over")
+            if (dino.y <= cactus.y+50) {
+                if (dino.x >= cactus.x-15 && dino.x <= cactus.x+15)
+                    gameOver();
             }
         }, speed)
     }
