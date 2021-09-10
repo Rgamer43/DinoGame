@@ -82,12 +82,18 @@ let cactus = {
     ySize: 105,
     move: () => {
         speed = 1;
+        moveSpeed = 1.5;
         let moveInterval = setInterval(() => {
-            cactus.x -= 2;
-            if (cactus.x < -50) cactus.x = w;
+            cactus.x -= moveSpeed;
+            if (cactus.x < -50) {
+                cactus.x = w;
+                moveSpeed += 0.5;
+            }
             if (dino.y <= cactus.y+cactus.ySize) {
-                if (dino.x+200 >= cactus.x-(cactus.xSize/4) && dino.x+200 <= cactus.x+(cactus.xSize/4))
+                if (dino.x+200 >= cactus.x-(cactus.xSize/4) && dino.x+200 <= cactus.x+(cactus.xSize/4)) {
                     gameOver();
+                    moveSpeed = 1.5;
+                }
             }
         }, speed)
     }
