@@ -32,6 +32,9 @@ let cactusSprite = new Image();
 dinoSprite.src = "trex1.png";
 cactusSprite.src = "cactus1.png";
 
+let score = 0;
+ctx.font = "30px Arial";
+
 let dino = {
     x: 0,
     y: -10,
@@ -40,8 +43,8 @@ let dino = {
     size: 75,
     jump: () => {
         dino.jumping = true;
-        let jumpHeight = 100; // Max jump height
-        let jumpSpeed = 10; // How often frames are updates (ms)
+        let jumpHeight = 150; // Max jump height
+        let jumpSpeed = 15; // How often frames are updates (ms)
         let jumpInterval = 5; // Pixels moved per frame 
         let jumpingInterval = setInterval(() => { // Create an interval, called every jumpSpeed milliseconds, that increases the dino's height.
             dino.y += jumpInterval;
@@ -60,11 +63,40 @@ let dino = {
     }
 }
 
+let gameEnded = false;
+function gameOver() {
+    if (!gameEnded) {
+        gameEnded = true;
+        console.log("Game Over!");
+        alert("Game Over! You scored " + score + " points.")
+        cactus.x = w;
+        score = 0;
+        gameEnded = false;
+    }
+}
+
 let cactus = {
-    x: 0,
+    x: w,
     y: -25,
     xSize: 50,
     ySize: 105,
+    move: () => {
+        speed = 1;
+        moveSpeed = 1.5;
+        let moveInterval = setInterval(() => {
+            cactus.x -= moveSpeed;
+            if (cactus.x < -50) {
+                cactus.x = w;
+                moveSpeed += 0.5;
+            }
+            if (dino.y <= cactus.y+cactus.ySize) {
+                if (dino.x+200 >= cactus.x-(cactus.xSize/4) && dino.x+200 <= cactus.x+(cactus.xSize/4)) {
+                    gameOver();
+                    moveSpeed = 1.5;
+                }
+            }
+        }, speed)
+    }
 }
 
 function init() {
@@ -76,6 +108,13 @@ function init() {
             }
         }
     });
+    scoreCounter = () => {
+        let scoreInterval = setInterval(() => {
+            score++;
+        }, 10);
+    }
+    cactus.move();
+    scoreCounter();
 }
 
 function draw() {
@@ -84,6 +123,7 @@ function draw() {
     ctx.fillRect(1, h/2, w, 2); // Ground
     ctx.drawImage(dinoSprite, w/8 + dino.x, (h/2 - dino.size - dino.y), dino.size, dino.size); // Dino
     ctx.drawImage(cactusSprite, cactus.x, h/2 - cactus.ySize - cactus.y, cactus.xSize, cactus.ySize); // Cactus
+    ctx.fillText("Score: " + score, 10, 50);
     window.requestAnimationFrame(draw);
 }
 
